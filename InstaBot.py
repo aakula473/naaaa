@@ -38,10 +38,10 @@ class InstagramDM:
         time.sleep(5)
 
     def send_message(self, recipient_username, message):
-        """Sends a message to the specified recipient with a random delay."""
-        delay = random.randint(60, 180)  # Random delay between 1 to 3 minutes
+        """Sends a message to the specified recipient with a random delay (1-3 minutes)."""
+        delay = random.randint(60, 180)  # Random delay between 1 and 3 minutes
         time.sleep(delay)
-
+        
         self.browser.get(f"https://www.instagram.com/direct/new/")
         time.sleep(3)
 
@@ -70,13 +70,13 @@ class InstagramDM:
         time.sleep(3)
 
     def check_and_reply(self, recipient_username):
-        """Checks for new messages from the recipient and replies with a predefined message after a delay."""
+        """Checks for new messages from the recipient and replies with a predefined message after a random delay (20-30 minutes)."""
         self.browser.get("https://www.instagram.com/direct/inbox/")
         time.sleep(5)
         
         try:
             conversation = WebDriverWait(self.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//div[contains(text(), '{recipient_username}')]")
+                EC.presence_of_element_located((By.XPATH, f"//div[contains(text(), '{recipient_username}')]"))
             )
             conversation.click()
             time.sleep(3)
@@ -102,7 +102,7 @@ class InstagramDM:
         """Closes the browser session."""
         self.browser.quit()
 
-# Flask Routes for Render.com Integration
+# Flask Routes for Render Integration
 @app.route("/send_message", methods=["POST"])
 def send_message_api():
     data = request.json
