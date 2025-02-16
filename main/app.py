@@ -1,12 +1,12 @@
+import os
+import time
+import random
 from flask import Flask, request, jsonify
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-import time
-import random
-import os
 
 app = Flask(__name__)
 
@@ -38,7 +38,7 @@ class InstagramDM:
         time.sleep(5)
 
     def send_message(self, recipient_username, message):
-        """Sends a message to the specified recipient with a random delay (1-3 minutes)."""
+        """Sends a message to the specified recipient with a random delay."""
         delay = random.randint(60, 180)  # Random delay between 1 and 3 minutes
         time.sleep(delay)
         
@@ -70,7 +70,7 @@ class InstagramDM:
         time.sleep(3)
 
     def check_and_reply(self, recipient_username):
-        """Checks for new messages from the recipient and replies with a predefined message after a random delay (20-30 minutes)."""
+        """Checks for new messages from the recipient and replies with a predefined message after a delay."""
         self.browser.get("https://www.instagram.com/direct/inbox/")
         time.sleep(5)
         
@@ -102,7 +102,7 @@ class InstagramDM:
         """Closes the browser session."""
         self.browser.quit()
 
-# Flask Routes for Render Integration
+# Flask Routes for Render.com Integration
 @app.route("/send_message", methods=["POST"])
 def send_message_api():
     data = request.json
@@ -119,5 +119,10 @@ def send_message_api():
     
     return jsonify({"status": "Message sent successfully"})
 
+@app.route("/")
+def home():
+    return "Flask App Running on Render!"
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+    port = int(os.getenv("PORT", 5000))  # Render provides the port via environment variable
+    app.run(host="0.0.0.0", port=port)
